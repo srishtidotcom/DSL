@@ -24,24 +24,15 @@ private:
     int size;
 
 public:
-    Playlist() {
-        head = nullptr;
-        size = 0;
-    }
-
-    // Insert at any position
-    void insertAt(int pos, int id, string title, float duration) 
-    // Delete at position
-    void deleteAt(int pos) 
-    // Sort playlist by chosen field
-    void sortPlaylist(int choice) 
-    // Display playlist
-    void display() 
-    // Play continuously in loop
-    void playLoop(int n) 
+    Playlist();
+    void insertAt(int pos, int id, string title, float duration);
+    void deleteAt(int pos);
+    void sortPlaylist(int choice);
+    void display();
+    void playLoop(int n);
 };
 
-// Menu-driven program
+// ---------------- MAIN FIRST ----------------
 int main() {
     Playlist pl;
     int choice;
@@ -99,125 +90,133 @@ int main() {
     return 0;
 }
 
-    // Insert at any position
-    void insertAt(int pos, int id, string title, float duration) {
-        if (pos < 1 || pos > size + 1) {
-            cout << "Invalid position!\n";
-            return;
-        }
+// ---------------- FUNCTION DEFINITIONS AFTER MAIN ----------------
 
-        Node* newNode = new Node(id, title, duration);
+// Constructor
+Playlist::Playlist() {
+    head = nullptr;
+    size = 0;
+}
 
-        if (head == nullptr) { // empty list
-            head = newNode;
-            head->next = head;
-            head->prev = head;
-        } 
-        else if (pos == 1) { // insert at head
-            Node* tail = head->prev;
-            newNode->next = head;
-            newNode->prev = tail;
-            tail->next = newNode;
-            head->prev = newNode;
-            head = newNode;
-        } 
-        else {
-            Node* temp = head;
-            for (int i = 1; i < pos - 1; i++) temp = temp->next;
-
-            Node* nextNode = temp->next;
-            newNode->next = nextNode;
-            newNode->prev = temp;
-            temp->next = newNode;
-            nextNode->prev = newNode;
-        }
-        size++;
-        cout << "Inserted successfully!\n";
+// Insert at any position
+void Playlist::insertAt(int pos, int id, string title, float duration) {
+    if (pos < 1 || pos > size + 1) {
+        cout << "Invalid position!\n";
+        return;
     }
 
-    // Delete at position
-    void deleteAt(int pos) {
-        if (head == nullptr || pos < 1 || pos > size) {
-            cout << "Invalid position!\n";
-            return;
-        }
+    Node* newNode = new Node(id, title, duration);
 
+    if (head == nullptr) { // empty list
+        head = newNode;
+        head->next = head;
+        head->prev = head;
+    } 
+    else if (pos == 1) { // insert at head
+        Node* tail = head->prev;
+        newNode->next = head;
+        newNode->prev = tail;
+        tail->next = newNode;
+        head->prev = newNode;
+        head = newNode;
+    } 
+    else {
         Node* temp = head;
+        for (int i = 1; i < pos - 1; i++) temp = temp->next;
 
-        if (size == 1) { // only one node
-            delete head;
-            head = nullptr;
-        } 
-        else if (pos == 1) { // delete head
-            Node* tail = head->prev;
-            temp = head;
-            head = head->next;
-            tail->next = head;
-            head->prev = tail;
-            delete temp;
-        } 
-        else {
-            for (int i = 1; i < pos; i++) temp = temp->next;
+        Node* nextNode = temp->next;
+        newNode->next = nextNode;
+        newNode->prev = temp;
+        temp->next = newNode;
+        nextNode->prev = newNode;
+    }
+    size++;
+    cout << "Inserted successfully!\n";
+}
 
-            Node* prevNode = temp->prev;
-            Node* nextNode = temp->next;
-            prevNode->next = nextNode;
-            nextNode->prev = prevNode;
-            delete temp;
-        }
-        size--;
-        cout << "Deleted successfully!\n";
+// Delete at position
+void Playlist::deleteAt(int pos) {
+    if (head == nullptr || pos < 1 || pos > size) {
+        cout << "Invalid position!\n";
+        return;
     }
 
-    // Sort playlist by chosen field
-    void sortPlaylist(int choice) {
-        if (!head || head->next == head) return; // empty or single node
+    Node* temp = head;
 
-        for (Node* i = head; i->next != head; i = i->next) {
-            for (Node* j = i->next; j != head; j = j->next) {
-                bool swapNeeded = false;
+    if (size == 1) { // only one node
+        delete head;
+        head = nullptr;
+    } 
+    else if (pos == 1) { // delete head
+        Node* tail = head->prev;
+        temp = head;
+        head = head->next;
+        tail->next = head;
+        head->prev = tail;
+        delete temp;
+    } 
+    else {
+        for (int i = 1; i < pos; i++) temp = temp->next;
 
-                if (choice == 1 && i->music_id > j->music_id) swapNeeded = true;
-                else if (choice == 2 && i->title > j->title) swapNeeded = true;
-                else if (choice == 3 && i->time_duration > j->time_duration) swapNeeded = true;
+        Node* prevNode = temp->prev;
+        Node* nextNode = temp->next;
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
+        delete temp;
+    }
+    size--;
+    cout << "Deleted successfully!\n";
+}
 
-                if (swapNeeded) {
-                    swap(i->music_id, j->music_id);
-                    swap(i->title, j->title);
-                    swap(i->time_duration, j->time_duration);
-                }
+// Sort playlist by chosen field
+void Playlist::sortPlaylist(int choice) {
+    if (!head || head->next == head) return; // empty or single node
+
+    for (Node* i = head; i->next != head; i = i->next) {
+        for (Node* j = i->next; j != head; j = j->next) {
+            bool swapNeeded = false;
+
+            if (choice == 1 && i->music_id > j->music_id) swapNeeded = true;
+            else if (choice == 2 && i->title > j->title) swapNeeded = true;
+            else if (choice == 3 && i->time_duration > j->time_duration) swapNeeded = true;
+
+            if (swapNeeded) {
+                swap(i->music_id, j->music_id);
+                swap(i->title, j->title);
+                swap(i->time_duration, j->time_duration);
             }
         }
-        cout << "Sorted successfully!\n";
     }
+    cout << "Sorted successfully!\n";
+}
 
-    // Display playlist
-    void display() {
-        if (!head) {
-            cout << "Playlist is empty!\n";
-            return;
-        }
-        Node* temp = head;
-        int index = 1;
-        do {
-            cout << index++ << ". [ID: " << temp->music_id
-                 << ", Title: " << temp->title
-                 << ", Duration: " << temp->time_duration << " min]\n";
-            temp = temp->next;
-        } while (temp != head);
+// Display playlist
+void Playlist::display() {
+    if (!head) {
+        cout << "Playlist is empty!\n";
+        return;
     }
+    Node* temp = head;
+    int index = 1;
+    do {
+        cout << index++ << ". [ID: " << temp->music_id
+             << ", Title: " << temp->title
+             << ", Duration: " << temp->time_duration << " min]\n";
+        temp = temp->next;
+    } while (temp != head);
+}
 
-    // Play continuously in loop
-    void playLoop(int n) {
-        if (!head) {
-            cout << "Playlist is empty!\n";
-            return;
-        }
-        cout << "Playing playlist in loop (" << n << " songs)...\n";
-        Node* temp = head;
-        for (int i = 0; i < n; i++) {
-            cout << "Playing: " << temp->title
-                 << " [" << temp->time_duration << " min]\n";
-            temp = temp->next; // circular, so it automatically loops
-        }
+// Play continuously in loop
+void Playlist::playLoop(int n) {
+    if (!head) {
+        cout << "Playlist is empty!\n";
+        return;
     }
+    cout << "Playing playlist in loop (" << n << " songs)...\n";
+    Node* temp = head;
+    for (int i = 0; i < n; i++) {
+        cout << "Playing: " << temp->title
+             << " [" << temp->time_duration << " min]\n";
+        temp = temp->next; // circular, so it automatically loops
+    }
+}
