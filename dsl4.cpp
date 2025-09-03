@@ -30,6 +30,76 @@ public:
     }
 
     // Insert at any position
+    void insertAt(int pos, int id, string title, float duration) 
+    // Delete at position
+    void deleteAt(int pos) 
+    // Sort playlist by chosen field
+    void sortPlaylist(int choice) 
+    // Display playlist
+    void display() 
+    // Play continuously in loop
+    void playLoop(int n) 
+};
+
+// Menu-driven program
+int main() {
+    Playlist pl;
+    int choice;
+
+    do {
+        cout << "\n--- Playlist Menu ---\n";
+        cout << "1. Insert Media File\n";
+        cout << "2. Delete Media File\n";
+        cout << "3. Display Playlist\n";
+        cout << "4. Sort Playlist\n";
+        cout << "5. Play in Loop\n";
+        cout << "6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            int id, pos;
+            string title;
+            float duration;
+            cout << "Enter music_id: "; cin >> id;
+            cout << "Enter title: "; cin.ignore(); getline(cin, title);
+            cout << "Enter duration (in min): "; cin >> duration;
+            cout << "Enter position: "; cin >> pos;
+            pl.insertAt(pos, id, title, duration);
+        }
+        else if (choice == 2) {
+            int pos;
+            cout << "Enter position to delete: "; cin >> pos;
+            pl.deleteAt(pos);
+        }
+        else if (choice == 3) {
+            pl.display();
+        }
+        else if (choice == 4) {
+            int field;
+            cout << "Sort by: 1.ID  2.Title  3.Duration: ";
+            cin >> field;
+            pl.sortPlaylist(field);
+        }
+        else if (choice == 5) {
+            int n;
+            cout << "Enter number of songs to play in loop: ";
+            cin >> n;
+            pl.playLoop(n);
+        }
+        else if (choice == 6) {
+            cout << "Exiting...\n";
+        }
+        else {
+            cout << "Invalid choice!\n";
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
+
+    // Insert at any position
     void insertAt(int pos, int id, string title, float duration) {
         if (pos < 1 || pos > size + 1) {
             cout << "Invalid position!\n";
@@ -151,62 +221,3 @@ public:
             temp = temp->next; // circular, so it automatically loops
         }
     }
-};
-
-// Menu-driven program
-int main() {
-    Playlist pl;
-    int choice;
-
-    do {
-        cout << "\n--- Playlist Menu ---\n";
-        cout << "1. Insert Media File\n";
-        cout << "2. Delete Media File\n";
-        cout << "3. Display Playlist\n";
-        cout << "4. Sort Playlist\n";
-        cout << "5. Play in Loop\n";
-        cout << "6. Exit\n";
-        cout << "Enter choice: ";
-        cin >> choice;
-
-        if (choice == 1) {
-            int id, pos;
-            string title;
-            float duration;
-            cout << "Enter music_id: "; cin >> id;
-            cout << "Enter title: "; cin.ignore(); getline(cin, title);
-            cout << "Enter duration (in min): "; cin >> duration;
-            cout << "Enter position: "; cin >> pos;
-            pl.insertAt(pos, id, title, duration);
-        }
-        else if (choice == 2) {
-            int pos;
-            cout << "Enter position to delete: "; cin >> pos;
-            pl.deleteAt(pos);
-        }
-        else if (choice == 3) {
-            pl.display();
-        }
-        else if (choice == 4) {
-            int field;
-            cout << "Sort by: 1.ID  2.Title  3.Duration: ";
-            cin >> field;
-            pl.sortPlaylist(field);
-        }
-        else if (choice == 5) {
-            int n;
-            cout << "Enter number of songs to play in loop: ";
-            cin >> n;
-            pl.playLoop(n);
-        }
-        else if (choice == 6) {
-            cout << "Exiting...\n";
-        }
-        else {
-            cout << "Invalid choice!\n";
-        }
-
-    } while (choice != 6);
-
-    return 0;
-}
