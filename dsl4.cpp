@@ -32,7 +32,7 @@ public:
     void playLoop(int n);
 };
 
-// ---------------- MAIN FIRST ----------------
+
 int main() {
     Playlist pl;
     int choice;
@@ -90,7 +90,7 @@ int main() {
     return 0;
 }
 
-// ---------------- FUNCTION DEFINITIONS AFTER MAIN ----------------
+
 
 // Constructor
 Playlist::Playlist() {
@@ -220,3 +220,4 @@ void Playlist::playLoop(int n) {
         temp = temp->next; // circular, so it automatically loops
     }
 }
+
