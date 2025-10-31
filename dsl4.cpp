@@ -165,7 +165,6 @@ void Playlist::playLoop() {
     }
 }
 
-// ---------------- Main -----------------
 int main() {
     Playlist playlist;
     int choice;
@@ -179,48 +178,91 @@ int main() {
         cout << "5. Play in Loop\n";
         cout << "6. Exit\n";
         cout << "Enter your choice: ";
-        cin >> choice;
+
+        // 🧠 Input validation
+        if (!(cin >> choice)) {
+            cin.clear();                // clear error flag
+            cin.ignore(10000, '\n');    // discard bad input
+            cout << "Invalid input! Please enter a number (1–6).\n";
+            continue;                   // go back to start of menu
+        }
 
         switch (choice) {
             case 1: {
                 int id, pos;
                 string title;
                 float duration;
+
                 cout << "Enter Music ID: ";
-                cin >> id;
-                cin.ignore();  // remove newline
+                if (!(cin >> id)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid ID!\n";
+                    break;
+                }
+
+                cin.ignore();  // remove leftover newline
                 cout << "Enter Title: ";
                 getline(cin, title);
+
                 cout << "Enter Duration (in minutes): ";
-                cin >> duration;
+                if (!(cin >> duration)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid duration!\n";
+                    break;
+                }
+
                 cout << "Enter Position to Insert: ";
-                cin >> pos;
+                if (!(cin >> pos)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid position!\n";
+                    break;
+                }
+
                 playlist.insert(id, title, duration, pos);
                 break;
             }
+
             case 2: {
                 int id;
                 cout << "Enter Music ID to Delete: ";
-                cin >> id;
+                if (!(cin >> id)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid ID!\n";
+                    break;
+                }
                 playlist.remove(id);
                 break;
             }
+
             case 3:
                 playlist.display();
                 break;
+
             case 4: {
                 int sortChoice;
                 cout << "Sort by: 1.ID  2.Title  3.Duration : ";
-                cin >> sortChoice;
+                if (!(cin >> sortChoice)) {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid input for sort choice!\n";
+                    break;
+                }
                 playlist.sort(sortChoice);
                 break;
             }
+
             case 5:
-                playlist.playLoop();  // infinite loop until stopped manually
+                playlist.playLoop();  // infinite loop (until manually stopped)
                 break;
+
             case 6:
                 cout << "Exiting...\n";
                 break;
+
             default:
                 cout << "Invalid choice!\n";
         }
